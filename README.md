@@ -24,7 +24,7 @@ npm start
 ```
 **Note:** After running `npm start`, the Angular dev server takes 
 roughly 30-60 seconds to compile and bundle the application before 
-it's ready. This is expected — wait for output similar to the following 
+it's ready. This is expected, wait for output similar to the following 
 before opening the app in your browser:
 
 ```
