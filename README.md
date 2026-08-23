@@ -250,3 +250,11 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 - Production build/deploy configuration: a real reverse-proxy or same-origin hosting setup
   to replace the dev-only `ng serve` proxy.
 - Configurable computer difficulty (the current heuristic is fixed and unbeatable-or-draw).
+
+## 13. Computer's Winning Priority
+
+1.	If O can win, play the winning move 
+2.	If X can win next, block X 
+3.	Take center if available 
+4.	Take a corner if available 
+5.	Take any available cell 
