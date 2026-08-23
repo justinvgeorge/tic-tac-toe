@@ -6,7 +6,7 @@ obj/
 .vs/
 *.dbmdl
 *.pdb
-appsettings.Development.json     # if it ever holds secrets — keep appsettings.json itself tracked
+appsettings.Development.json   
 
 # ===== Node / Angular =====
 node_modules/
@@ -26,4 +26,6 @@ Thumbs.db
 
 # ===== Environment files =====
 .env
-.env.localCLAUDE.md
+.env.local
+CLAUDE.md
+prompts-log.md
