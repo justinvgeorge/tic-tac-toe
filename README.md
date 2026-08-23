@@ -6,22 +6,22 @@ whatever the backend returns.
 
 ## 0.  Quick Setup
 
-\`\`\`bash
+```bash
 git clone https://github.com/justinvgeorge/tic-tac-toe
 cd tic-tac-toe/
 cd backend/
 dotnet build TicTacToe.sln
 dotnet run --project TicTacToe.Api
-\`\`\`
+```
 
 The API is listening at `https://localhost:7221/`
 
 Open another terminal at `tic-tac-toe/frontend`:
 
-\`\`\`bash
+```bash
 npm install
 npm start
-\`\`\`
+```
 
 The Tic Tac Toe application is running at `http://localhost:4200/`
 
