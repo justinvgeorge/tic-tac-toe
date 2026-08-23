@@ -1,16 +1,16 @@
 # Tic Tac Toe
 
-A full-stack tic-tac-toe app built for a technical interview assignment: an ASP.NET Core
+A full-stack tic-tac-toe app with an ASP.NET Core
 Web API backend that owns all game state and rules, and an Angular frontend that renders
 whatever the backend returns.
 
 ## 1. Project Overview
 
-Two play modes — Two Player and Play vs Computer — with move history, a session-level
+Two play modes : Two Player and Play vs Computer; with move history, a session-level
 scoreboard, undo, and reset. The backend is the sole source of truth: it validates every
 move, computes win/draw state, and (in Vs Computer mode) plays the computer's reply move
 server-side in the same request. The frontend never computes a move, a win, or history
-locally — it only calls the API and displays the response.
+locally, it only calls the API and displays the response.
 
 Full product requirements: `docs/requirements_v2.md`. Full frontend architecture and user
 flows: `docs/frontend-spec_v2.md`.
@@ -18,7 +18,7 @@ flows: `docs/frontend-spec_v2.md`.
 ### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Node.js](https://nodejs.org/) — a current LTS or later (Angular 20 requires a recent Node; this project was built and verified against Node 24.14.1)
+- [Node.js](https://nodejs.org/): a current LTS or later (Angular 20 requires a recent Node; this project was built and verified against Node 24.14.1)
 - Git
 
 ### Getting the code
@@ -28,7 +28,7 @@ git clone <this-repo-url>
 cd tic-tac-toe
 ```
 
-Then follow sections 4 and 5 below — start the backend first, then the frontend.
+Then follow sections 4 and 5 below, start the backend first, then the frontend.
 
 ## 2. Tech Stack
 
@@ -44,15 +44,15 @@ Base requirements (`docs/requirements_v2.md`):
 - Two Player and Vs Computer modes; computer always plays O, following win → block → center → corner → any-available priority.
 - Win detection (row/column/diagonal) with winning-cell highlighting; draw detection.
 - Move history (move number, player, cell).
-- Undo Last Move — removes one move in Two Player mode, removes the pair (computer + human) in Vs Computer mode; disabled with no moves to undo or once the game is Won/Draw.
-- Reset Game (same game id and mode, scoreboard untouched) and Reset Scoreboard (separate action) — both backend-driven.
+- Undo Last Move: removes one move in Two Player mode, removes the pair (computer + human) in Vs Computer mode; disabled with no moves to undo or once the game is Won/Draw.
+- Reset Game (same game id and mode, scoreboard untouched) and Reset Scoreboard (separate action), both backend-driven.
 
 Notable additions beyond the base requirements:
-- **Change Mode** — a dedicated action (distinct from Reset Game) that starts a brand-new game with a freshly chosen mode, since mode is immutable once a game is created. Confirms first only if the current game is still in progress.
-- **Auto-reset countdown** — on Won/Draw, a 5-second "Next game starting in Xs..." countdown automatically resets the game; cancelled if the user acts manually first.
-- **Reset Scoreboard confirmation** — a confirmation prompt before clearing X/O wins and draws (same confirmation pattern as Change Mode).
-- **Delayed computer-move reveal** (Vs Computer only) — the backend returns both the human's and computer's move in one response, but the frontend holds the computer's move back briefly (currently 200ms — see note under Known Limitations) so it reads as a separate turn rather than appearing instantly; the human's own move still renders immediately via a local optimistic overlay.
-- **Animations** — mark-placement bounce, an SVG-drawn win line, and a move-history slide-in, all respecting `prefers-reduced-motion`.
+- **Change Mode**: a dedicated action (distinct from Reset Game) that starts a brand-new game with a freshly chosen mode, since mode is immutable once a game is created. Confirms first only if the current game is still in progress.
+- **Auto-reset countdown**: on Won/Draw, a 5-second "Next game starting in Xs..." countdown automatically resets the game; cancelled if the user acts manually first.
+- **Reset Scoreboard confirmation**: a confirmation prompt before clearing X/O wins and draws (same confirmation pattern as Change Mode).
+- **Delayed computer-move reveal** (Vs Computer only): the backend returns both the human's and computer's move in one response, but the frontend holds the computer's move back briefly (currently 200ms: see note under Known Limitations) so it reads as a separate turn rather than appearing instantly; the human's own move still renders immediately via a local optimistic overlay.
+- **Animations**: mark-placement bounce, an SVG-drawn win line, and a move-history slide-in, all respecting `prefers-reduced-motion`.
 - Custom warm-palette visual design (rounded "tile" board, pill-shaped buttons) matching a supplied reference design and asset set (`./stylesheet`).
 
 ## 4. How to Run the Backend Locally
@@ -65,7 +65,7 @@ dotnet run --project TicTacToe.Api
 ```
 
 Serves on `http://localhost:5201` and `https://localhost:7221`; Swagger UI at `/swagger`
-in Development. No `appsettings` changes needed — state is in-memory and resets on restart.
+in Development. No `appsettings` changes needed, state is in-memory and resets on restart.
 
 ## 5. How to Run the Frontend Locally
 
@@ -76,20 +76,20 @@ npm install
 npm start
 ```
 
-Serves on `http://localhost:4200`. Requires the backend running first — the dev-server
+Serves on `http://localhost:4200`. Requires the backend running first the dev-server
 proxy (`proxy.conf.js`) forwards `/api/*` to `https://localhost:7221`. Open
 `http://localhost:4200` in a browser; there's nothing to configure.
 
 `npm start` runs `ng serve` via the Angular CLI already pinned in `package.json`
-(`@angular/cli ^20.3.34`), installed locally by `npm install` — no global CLI install or
+(`@angular/cli ^20.3.34`), installed locally by `npm install`, no global CLI install or
 version pinning needed. (If you ever invoke a *global* `ng`/`npx @angular/cli@latest`
-instead of the project's local one, make sure it resolves to a v20+ CLI — v19 flags newer
+instead of the project's local one, make sure it resolves to a v20+ CLI, v19 flags newer
 Node versions like 24.x as unsupported.)
 
 ## 6. API Endpoint Summary
 
 Base path `/api`. All responses are JSON, camelCase (ASP.NET Core's default
-`System.Text.Json` policy — the wire format doesn't match the C# PascalCase source).
+`System.Text.Json` policy the wire format doesn't match the C# PascalCase source).
 Every `GameStateDto` response embeds the current `ScoreboardDto`.
 
 | Method | Route | Body | Returns |
@@ -111,8 +111,7 @@ version; frontend-side TypeScript models: `frontend/src/app/models/`.
 
 ## 7. How to Run Tests
 
-**Backend** (xUnit, `backend/TicTacToe.Api.Tests`, written manually as part of the
-hand-coded backend), from `backend/`:
+**Backend** (xUnit, `backend/TicTacToe.Api.Tests`), from `backend/`:
 
 ```bash
 dotnet test TicTacToe.sln
@@ -121,9 +120,9 @@ dotnet test TicTacToe.sln
 48 tests covering `GameRules` (all 8 winning lines, draw detection), `ComputerPlayerService`
 (win → block → center → corner → fallback priority, including the full-board error case),
 `ScoreboardService`, and `GameService` (move validation, win/draw detection, the
-Vs-Computer auto-reply, both undo variants, and reset) — all against the real in-memory
+Vs-Computer auto-reply, both undo variants, and reset), all against the real in-memory
 repositories, no mocking library needed. Controllers themselves aren't covered (no
-integration/HTTP-level tests yet — see Known Limitations).
+integration/HTTP-level tests yet: see Known Limitations).
 
 **Frontend** (Karma + Jasmine), from `frontend/`:
 
@@ -138,11 +137,10 @@ cancellation on manual actions, and cleanup on destroy).
 
 ## 8. AI Tools and Prompt Summary
 
-The backend (`backend/TicTacToe.Api` — Controllers, Services, Models, DTOs, Repositories)
-was written manually. The frontend (`frontend/`) was built with Claude Code (Anthropic):
+The frontend (`frontend/`) was built with Claude Code (Anthropic):
 all Angular scaffolding, components, services, models, styling, animations, and this
 documentation. Work proceeded feature-by-feature via targeted prompts rather than one
-large generation — roughly: reading the existing backend to summarize its API contract →
+large generation, roughly: reading the existing backend to summarize its API contract →
 frontend spec drafts (v1, then v2 after clarifying requirements) → Angular project
 scaffold + proxy setup → models + API service → one prompt per component (game board,
 mode selector, scoreboard, move history) → top-level container wiring → bug-fix passes
@@ -157,7 +155,7 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 ## 9. Design Decisions
 
 - **Backend as sole source of truth**: the frontend holds one signal (`GameContainer.gameState`)
-  that's wholesale-replaced by every API response — never patched, never computed locally.
+  that's wholesale-replaced by every API response: never patched, never computed locally.
   No separate frontend state-management library or service.
 - **Standalone Angular components** throughout, no NgModules, per the project's stated convention.
 - **Shared pill-button styling as one global CSS class** (`.pill-button` in `styles.css`)
@@ -171,7 +169,7 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
   Reset Game for this would have been incorrect.
 - **CSS-driven animations with no manual "is this new" bookkeeping**: Angular's `@for`
   `track` semantics already guarantee existing DOM nodes are reused across state updates,
-  and CSS animations only fire on a node's actual creation — so a plain unconditional
+  and CSS animations only fire on a node's actual creation, so a plain unconditional
   `animation:` declaration on marks/history entries is correct by construction, verified
   empirically (not just assumed) via `getAnimations()` timing checks on the live app.
 - **Filled-path SVG icons → scale-bounce placement animation, not stroke-drawing**: the
@@ -181,20 +179,20 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 
 ## 10. Clarifications and Assumptions
 
-- **Reset Game vs. Change Mode**: resolved explicitly in `docs/requirements_v2.md` — Reset
+- **Reset Game vs. Change Mode**: resolved explicitly in `docs/requirements_v2.md`: Reset
   Game reuses the same game id and mode; Change Mode (switching modes) always creates a new
   game id. An earlier draft of the frontend spec (`docs/frontend-spec.md`) had left this as
   an open assumption before the v2 requirements resolved it.
   Assumed: Change Mode discards the current game and its scoreboard is unaffected.
 - **Undo disabled after game completion**: `docs/requirements_v2.md` states this was a
   deliberate choice ("Clarification 2") over the alternative of allowing undo past a
-  completed game (which would require reversing scoreboard increments) — implemented
+  completed game (which would require reversing scoreboard increments) implemented
   exactly as specified.
 - **JSON casing**: assumed nothing about wire format in advance; verified empirically by
   running the backend and inspecting a real response (`camelCase`, not the C# source's
   PascalCase) before writing the frontend models, since ASP.NET Core's default JSON policy
   isn't obvious from reading the C# code alone.
-- **Scoreboard is a single global counter**, not per-game or per-user — matches the
+- **Scoreboard is a single global counter**, not per-game or per-user: matches the
   backend's actual implementation (`InMemoryScoreboardRepository`, a singleton with plain
   counters), consistent with "session-level scoreboard" in the requirements for a
   single-instance, no-auth app.
@@ -202,32 +200,32 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 ## 11. Known Limitations
 
 - **In-memory backend state**: all games and the scoreboard reset on backend restart;
-  state is shared across every connected client — there's no authentication or per-user
+  state is shared across every connected client, there's no authentication or per-user
   isolation. Expected for this exercise, not a bug.
 - **Backend test coverage stops at the service layer.** `GameService`, `GameRules`,
   `ComputerPlayerService`, and `ScoreboardService` have unit tests
   (`backend/TicTacToe.Api.Tests`), but `GamesController`/`ScoreboardController` themselves
-  (routing, status-code mapping, request binding) have no automated coverage yet — only
+  (routing, status-code mapping, request binding) have no automated coverage yet, only
   manual/`curl`-level verification during development.
-- **No frontend routing** — a single view gated by component state, not URL-addressable.
+- **No frontend routing**: a single view gated by component state, not URL-addressable.
 - **Dev-server proxy required locally**: the frontend calls relative `/api/...` paths and
   depends on `ng serve`'s proxy to reach the backend; there's no production deployment
   configuration (e.g. a real reverse proxy or same-host hosting) set up.
 - **`COMPUTER_MOVE_DELAY_MS`** in `frontend/src/app/components/game-container/game-container.ts`
   currently reads `200`ms on disk. It was set to `500`ms earlier in this project's history:
   worth confirming which value is actually intended before treating this as final.
-- No E2E/integration tests — verification during development relied on unit tests plus
+- No E2E/integration tests: verification during development relied on unit tests plus
   manual and scripted (Puppeteer, ad hoc) browser checks, not a standing E2E suite.
 
 ## 12. Future Improvements
 
-- Controller-level integration tests (`GamesController`/`ScoreboardController` — routing,
+- Controller-level integration tests (`GamesController`/`ScoreboardController`: routing,
   status-code mapping, request validation) using `WebApplicationFactory`, to close the gap
   left by the current service-layer-only backend test coverage.
 - Frontend E2E tests (e.g. Playwright) covering full user flows end-to-end against a real
   backend, replacing the ad hoc manual/scripted verification used during development.
 - Persistent storage (replace the in-memory repositories) if this were to become a real
   multi-user product, plus authentication/per-user game and scoreboard isolation.
-- Production build/deploy configuration — a real reverse-proxy or same-origin hosting setup
+- Production build/deploy configuration: a real reverse-proxy or same-origin hosting setup
   to replace the dev-only `ng serve` proxy.
 - Configurable computer difficulty (the current heuristic is fixed and unbeatable-or-draw).
