@@ -20,7 +20,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularDev", policy =>
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyMethod()
-              .AllowAnyHeader());
+              .AllowAnyHeader()
+              .SetPreflightMaxAge(TimeSpan.FromMinutes(30)));
 });
 
 var app = builder.Build();

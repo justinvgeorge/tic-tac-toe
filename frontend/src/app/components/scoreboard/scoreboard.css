@@ -1,0 +1,16 @@
+.scoreboard-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 22px;
+  background: var(--color-button-fill);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 10px rgba(74, 46, 30, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--color-tray-base);
+}
+
+.score {
+  font-weight: 700;
+}

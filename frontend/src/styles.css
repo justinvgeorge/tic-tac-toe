@@ -1,0 +1,71 @@
+:root {
+  --color-tile: #e8b563;
+  --color-tile-frame: #c97b3d;
+  --color-tray-base: #4a2e1e;
+  --color-button-fill: #f5e6d3;
+  --color-button-text: #4a2e1e;
+  --color-win-highlight: #f6c445;
+  --color-win-outline: #fff2c4;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--color-tray-base);
+}
+
+/* Shared pill-button language: Undo, Reset Game, Reset Scoreboard, Change
+   Mode, and the mode-selector buttons all use this for a consistent look. */
+.pill-button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 88px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-button-fill);
+  color: var(--color-button-text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(74, 46, 30, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition:
+    filter 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.pill-button svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.pill-button:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.pill-button:active:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.pill-button:disabled {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+  cursor: not-allowed;
+}

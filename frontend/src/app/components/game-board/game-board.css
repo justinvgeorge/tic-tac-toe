@@ -1,0 +1,125 @@
+.board-tray {
+  display: inline-block;
+  padding: 14px 14px 24px;
+  background: var(--color-tray-base);
+  border-radius: 28px;
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.35),
+    inset 0 2px 2px rgba(255, 255, 255, 0.08);
+}
+
+.board-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 84px);
+  grid-template-rows: repeat(3, 84px);
+  gap: 6px;
+  background: var(--color-tile-frame);
+  padding: 6px;
+  border-radius: 18px;
+}
+
+.cell {
+  background: var(--color-tile);
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 6px rgba(74, 46, 30, 0.35);
+}
+
+.cell.clickable:hover {
+  filter: brightness(1.08);
+  cursor: pointer;
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+.cell.winning {
+  background: var(--color-win-highlight);
+  box-shadow:
+    0 0 0 3px var(--color-win-outline),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+    inset -3px -3px 6px rgba(74, 46, 30, 0.25);
+}
+
+.mark {
+  width: 48px;
+  height: 48px;
+  color: var(--color-tray-base);
+  filter: url('#dilate-marks');
+}
+
+.mark path {
+  fill: currentColor;
+}
+
+/* Placement "token set down" bounce. Only ever fires for a freshly-placed
+   mark: the @if in the template means the .mark element doesn't exist in
+   the DOM until the cell actually gets a value, so this only plays on
+   that first insertion — an already-placed mark's DOM node persists
+   across later re-renders (board is a wholesale-replaced array each
+   update) and never re-triggers this animation. */
+@keyframes mark-place {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mark {
+    animation: mark-place 300ms ease-out;
+  }
+}
+
+/* Win line overlay: an SVG drawn independently of the X/O assets, sized
+   and positioned to exactly match .board-grid's own box. */
+.win-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.win-line line {
+  stroke: var(--color-win-outline);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@keyframes win-line-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 300ms delay matches the mark-place duration above, so the line only
+     starts drawing once the winning mark's own placement bounce has
+     settled. animation-fill-mode "both" keeps the line hidden for the
+     duration of that delay (backwards), and fully drawn after (forwards). */
+  .win-line line {
+    animation: win-line-draw 300ms ease-out 300ms both;
+  }
+}

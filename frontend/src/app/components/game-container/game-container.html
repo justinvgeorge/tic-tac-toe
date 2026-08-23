@@ -1,0 +1,75 @@
+<div class="stage">
+  @if (gameState(); as state) {
+    @if (changingMode()) {
+      <app-mode-selector (modeSelected)="onModeSelected($event)" />
+    } @else {
+      <app-game-board
+        [board]="state.board"
+        [status]="state.status"
+        [winningCells]="state.winningCells"
+        [optimisticMark]="optimisticMark()"
+        [boardDisabled]="pendingComputerMove()"
+        (cellClick)="onCellClick($event)"
+      />
+
+      @if (statusMessage(); as message) {
+        <div class="status-message">
+          {{ message }}
+          @if (autoResetSecondsRemaining(); as secondsRemaining) {
+            <span class="auto-reset-indicator">
+              Next game starting in {{ secondsRemaining }}s...
+            </span>
+          }
+        </div>
+      }
+
+      <div class="controls">
+        <button
+          type="button"
+          class="pill-button"
+          [disabled]="!canUndo() || pendingComputerMove()"
+          (click)="onUndoClick()"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+            />
+          </svg>
+          <span>Undo</span>
+        </button>
+        <button
+          type="button"
+          class="pill-button"
+          [disabled]="pendingComputerMove()"
+          (click)="onResetGameClick()"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+            />
+          </svg>
+          <span>Reset Game</span>
+        </button>
+        <button
+          type="button"
+          class="pill-button"
+          [disabled]="pendingComputerMove()"
+          (click)="onChangeModeClick()"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"
+            />
+          </svg>
+          <span>Change Mode</span>
+        </button>
+      </div>
+
+      <app-move-history [moveHistory]="state.moveHistory" />
+
+      <app-scoreboard [scoreboard]="state.scoreboard" (reset)="onScoreboardReset($event)" />
+    }
+  } @else {
+    <app-mode-selector (modeSelected)="onModeSelected($event)" />
+  }
+</div>

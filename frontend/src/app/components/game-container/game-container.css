@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 16px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.status-message {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-tray-base);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.auto-reset-indicator {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+}

@@ -1,0 +1,10 @@
+.mode-selector {
+  display: flex;
+  gap: 16px;
+}
+
+.mode-button {
+  min-width: 140px;
+  padding: 16px 24px;
+  font-size: 1rem;
+}

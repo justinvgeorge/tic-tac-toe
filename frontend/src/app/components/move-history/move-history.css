@@ -1,0 +1,50 @@
+.history-card {
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 12px 20px;
+  background: var(--color-button-fill);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 10px rgba(74, 46, 30, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--color-tray-base);
+}
+
+.move-history {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.move {
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+.move + .move {
+  border-top: 1px solid rgba(201, 123, 61, 0.35);
+}
+
+@keyframes move-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Angular's @for (track move.moveNumber) reuses DOM nodes for existing
+   entries and only creates a new node for a newly appended move, so this
+   unconditional animation only ever plays once, on that new node's first
+   insertion — existing entries never replay it. */
+@media (prefers-reduced-motion: no-preference) {
+  .move {
+    animation: move-slide-in 220ms ease-out;
+  }
+}

@@ -1,0 +1,9 @@
+<div class="history-card">
+  <ol class="move-history">
+    @for (move of moveHistory(); track move.moveNumber) {
+      <li class="move">
+        #{{ move.moveNumber }} — {{ move.player === Player.X ? 'X' : 'O' }} — ({{ move.row }}, {{ move.column }})
+      </li>
+    }
+  </ol>
+</div>
