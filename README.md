@@ -4,6 +4,27 @@ A full-stack tic-tac-toe app with an ASP.NET Core
 Web API backend that owns all game state and rules, and an Angular frontend that renders
 whatever the backend returns.
 
+## 0.  Quick Setup
+
+\`\`\`bash
+git clone https://github.com/justinvgeorge/tic-tac-toe
+cd tic-tac-toe/
+cd backend/
+dotnet build TicTacToe.sln
+dotnet run --project TicTacToe.Api
+\`\`\`
+
+The API is listening at `https://localhost:7221/`
+
+Open another terminal at `tic-tac-toe/frontend`:
+
+\`\`\`bash
+npm install
+npm start
+\`\`\`
+
+The Tic Tac Toe application is running at `http://localhost:4200/`
+
 ## 1. Project Overview
 
 Two play modes : Two Player and Play vs Computer; with move history, a session-level
