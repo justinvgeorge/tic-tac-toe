@@ -1,0 +1,29 @@
+# ===== .NET / Visual Studio =====
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.dbmdl
+*.pdb
+appsettings.Development.json     # if it ever holds secrets — keep appsettings.json itself tracked
+
+# ===== Node / Angular =====
+node_modules/
+dist/
+.angular/
+*.log
+npm-debug.log*
+
+# ===== IDE / editor =====
+.vscode/
+.idea/
+*.swp
+
+# ===== OS junk =====
+.DS_Store
+Thumbs.db
+
+# ===== Environment files =====
+.env
+.env.local
