@@ -22,8 +22,19 @@ Open another terminal at `tic-tac-toe/frontend`:
 npm install
 npm start
 ```
+**Note:** After running `npm start`, the Angular dev server takes 
+roughly 30-60 seconds to compile and bundle the application before 
+it's ready. This is expected — wait for output similar to the following 
+before opening the app in your browser:
 
-The Tic Tac Toe application is running at `http://localhost:4200/`
+```
+Application bundle generation complete. [4.292 seconds]
+Watch mode enabled. Watching for file changes...
+  ➜  Local:   http://localhost:4200/
+```
+
+Once you see the `Local: http://localhost:4200/` line, the app is ready 
+to open.
 
 ## 1. Project Overview
 
