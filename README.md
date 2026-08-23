@@ -34,7 +34,7 @@ Then follow sections 4 and 5 below — start the backend first, then the fronten
 
 - **Backend**: ASP.NET Core Web API (.NET 8), C#, in-memory state (no database), Swagger/OpenAPI in Development.
 - **Frontend**: Angular 20, standalone components (no NgModules), TypeScript, plain CSS (no UI framework), RxJS (via `HttpClient`).
-- **Testing**: Karma + Jasmine (frontend unit tests). No backend test project.
+- **Testing**: Karma + Jasmine (frontend unit tests); xUnit (backend unit tests, `backend/TicTacToe.Api.Tests`).
 - **Dev tooling**: Angular CLI dev-server proxy (`proxy.conf.js`) bridging the frontend's `http://localhost:4200` to the backend's `https://localhost:7221`.
 
 ## 3. Features Implemented
@@ -111,10 +111,23 @@ version; frontend-side TypeScript models: `frontend/src/app/models/`.
 
 ## 7. How to Run Tests
 
-Frontend unit tests only (no backend test project exists):
+**Backend** (xUnit, `backend/TicTacToe.Api.Tests`, written manually as part of the
+hand-coded backend), from `backend/`:
 
 ```bash
-cd frontend
+dotnet test TicTacToe.sln
+```
+
+48 tests covering `GameRules` (all 8 winning lines, draw detection), `ComputerPlayerService`
+(win → block → center → corner → fallback priority, including the full-board error case),
+`ScoreboardService`, and `GameService` (move validation, win/draw detection, the
+Vs-Computer auto-reply, both undo variants, and reset) — all against the real in-memory
+repositories, no mocking library needed. Controllers themselves aren't covered (no
+integration/HTTP-level tests yet — see Known Limitations).
+
+**Frontend** (Karma + Jasmine), from `frontend/`:
+
+```bash
 npm install   # if not already done
 npx ng test --watch=false --browsers=ChromeHeadless
 ```
@@ -125,10 +138,11 @@ cancellation on manual actions, and cleanup on destroy).
 
 ## 8. AI Tools and Prompt Summary
 
-Built with Claude Code (Anthropic), used for the full build: backend review, Angular
-scaffolding, all components/services/models, styling, animations, and this documentation.
-Work proceeded feature-by-feature via targeted prompts rather than one large
-generation — roughly: initial CLAUDE.md/backend review → API contract summary →
+The backend (`backend/TicTacToe.Api` — Controllers, Services, Models, DTOs, Repositories)
+was written manually. The frontend (`frontend/`) was built with Claude Code (Anthropic):
+all Angular scaffolding, components, services, models, styling, animations, and this
+documentation. Work proceeded feature-by-feature via targeted prompts rather than one
+large generation — roughly: reading the existing backend to summarize its API contract →
 frontend spec drafts (v1, then v2 after clarifying requirements) → Angular project
 scaffold + proxy setup → models + API service → one prompt per component (game board,
 mode selector, scoreboard, move history) → top-level container wiring → bug-fix passes
@@ -190,9 +204,11 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 - **In-memory backend state**: all games and the scoreboard reset on backend restart;
   state is shared across every connected client — there's no authentication or per-user
   isolation. Expected for this exercise, not a bug.
-- **No backend test project.** Frontend has unit test coverage; backend logic
-  (`GameService`, `GameRules`, `ComputerPlayerService`) is untested beyond manual/API-level
-  verification during development.
+- **Backend test coverage stops at the service layer.** `GameService`, `GameRules`,
+  `ComputerPlayerService`, and `ScoreboardService` have unit tests
+  (`backend/TicTacToe.Api.Tests`), but `GamesController`/`ScoreboardController` themselves
+  (routing, status-code mapping, request binding) have no automated coverage yet — only
+  manual/`curl`-level verification during development.
 - **No frontend routing** — a single view gated by component state, not URL-addressable.
 - **Dev-server proxy required locally**: the frontend calls relative `/api/...` paths and
   depends on `ng serve`'s proxy to reach the backend; there's no production deployment
@@ -205,8 +221,9 @@ a live-running instance (screenshots, and for animation/timing behavior, direct
 
 ## 12. Future Improvements
 
-- Backend test project (unit tests for `GameService`, `GameRules`, `ComputerPlayerService`;
-  integration tests for the controllers).
+- Controller-level integration tests (`GamesController`/`ScoreboardController` — routing,
+  status-code mapping, request validation) using `WebApplicationFactory`, to close the gap
+  left by the current service-layer-only backend test coverage.
 - Frontend E2E tests (e.g. Playwright) covering full user flows end-to-end against a real
   backend, replacing the ad hoc manual/scripted verification used during development.
 - Persistent storage (replace the in-memory repositories) if this were to become a real
